@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:math_expressions/math_expressions.dart';
 import 'my_button.dart';
 
 class CalculatorPage extends StatefulWidget {
@@ -11,6 +12,40 @@ class CalculatorPage extends StatefulWidget {
 }
 
 class _CalculatorPageState extends State<CalculatorPage> {
+  String expression = "";
+  String output = "";
+
+  buttonPressed(String input) {
+    // print(input);
+    if (input == 'C') {
+      setState(() {
+        expression = '';
+        output = '';
+      });
+    } else if (input == 'Del') {
+      if (expression.length > 0) {
+        setState(() {
+          expression = expression.substring(0, expression.length - 1);
+        });
+      }
+    } else if (input == '=') {
+      evalExpression();
+    } else {
+      setState(() {
+        expression += input;
+      });
+    }
+  }
+
+  evalExpression() {
+    Parser p = Parser();
+    Expression exp = p.parse(expression);
+    ContextModel cm = ContextModel();
+    setState(() {
+      output = '${exp.evaluate(EvaluationType.REAL, cm)}';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,13 +62,19 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 width: MediaQuery.of(context).size.width * .9,
                 height: MediaQuery.of(context).size.height * .2,
                 alignment: Alignment.centerRight,
-                child: Text("0+0"),
+                child: Text(
+                  expression,
+                  textScaleFactor: 2,
+                ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * .9,
                 height: MediaQuery.of(context).size.height * .2,
                 alignment: Alignment.centerRight,
-                child: Text("0"),
+                child: Text(
+                  output,
+                  textScaleFactor: 2,
+                ),
               ),
               Container(
                 child: Column(
@@ -42,46 +83,106 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MyButton(buttonText: 'C', buttonColor: Colors.orange),
-                        MyButton(buttonText: 'Del', buttonColor: Colors.orange),
-                        MyButton(buttonText: '%', buttonColor: Colors.orange),
-                        MyButton(buttonText: '/', buttonColor: Colors.orange),
+                        MyButton(
+                            buttonText: 'C',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: 'Del',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '%',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '/',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MyButton(buttonText: '7', buttonColor: Colors.blue),
-                        MyButton(buttonText: '8', buttonColor: Colors.blue),
-                        MyButton(buttonText: '9', buttonColor: Colors.blue),
-                        MyButton(buttonText: 'X', buttonColor: Colors.orange),
+                        MyButton(
+                            buttonText: '7',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '8',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '9',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '*',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MyButton(buttonText: '4', buttonColor: Colors.blue),
-                        MyButton(buttonText: '5', buttonColor: Colors.blue),
-                        MyButton(buttonText: '6', buttonColor: Colors.blue),
-                        MyButton(buttonText: '-', buttonColor: Colors.orange),
+                        MyButton(
+                            buttonText: '4',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '5',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '6',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '-',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MyButton(buttonText: '1', buttonColor: Colors.blue),
-                        MyButton(buttonText: '2', buttonColor: Colors.blue),
-                        MyButton(buttonText: '3', buttonColor: Colors.blue),
-                        MyButton(buttonText: '+', buttonColor: Colors.orange),
+                        MyButton(
+                            buttonText: '1',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '2',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '3',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '+',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MyButton(buttonText: '.', buttonColor: Colors.blue),
-                        MyButton(buttonText: '0', buttonColor: Colors.blue),
-                        MyButton(buttonText: '00', buttonColor: Colors.blue),
-                        MyButton(buttonText: '=', buttonColor: Colors.orange),
+                        MyButton(
+                            buttonText: '.',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '0',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '00',
+                            buttonColor: Colors.blue,
+                            buttonPressed: buttonPressed),
+                        MyButton(
+                            buttonText: '=',
+                            buttonColor: Colors.orange,
+                            buttonPressed: buttonPressed),
                       ],
                     ),
                   ],
